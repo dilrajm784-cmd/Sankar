@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRADING WITH KAROL ( SEBI REGISTRARED)
-</title>
+    <title>TRADING WITH KAROL ( SEBI REGISTRARED)</title>
 
     <!-- ========================================== -->
     <!-- 1. META PIXEL & TRACKING CODE (START) -->
@@ -153,6 +152,7 @@
             margin-bottom: 25px;
             letter-spacing: 1px;
             transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
         }
 
         .join-btn:active {
@@ -180,9 +180,17 @@
             font-weight: 500;
         }
 
-        .ad-badge span {
+        /* Clickable Agency Link Styling */
+        .ad-badge .agency-link {
             color: #00b4d8;
             font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s, text-decoration 0.2s;
+        }
+
+        .ad-badge .agency-link:hover {
+            color: #805ad5;
+            text-decoration: underline;
         }
 
         /* Footer Copyright & Links */
@@ -205,8 +213,7 @@
         </div>
 
         <!-- Name Title -->
-        <div class="main-name">TRADING WITH KAROL ( SEBI REGISTRARED)
-</div>
+        <div class="main-name">TRADING WITH KAROL ( SEBI REGISTRARED)</div>
 
         <!-- Point List -->
         <ul class="feature-list">
@@ -221,8 +228,8 @@
             Join our learning community and grow your knowledge
         </div>
 
-        <!-- Telegram Button -->
-        <a id="telegramLink" href="https://t.me/+VHjhTMsxbglhNzU1" class="join-btn" onclick="trackButtonClick()">
+        <!-- Telegram Button (javascript se click handle ho rha h) -->
+        <a id="telegramLink" href="javascript:void(0);" class="join-btn" onclick="trackButtonClick()">
             JOIN TELEGRAM
         </a>
 
@@ -231,9 +238,9 @@
             नियत अच्छी और मेहनत सच्ची हो, तो कामयाबी जरूर मिलती है।
         </div>
 
-        <!-- Agency Tag -->
+        <!-- Agency Tag with Clickable Link -->
         <div class="ad-badge">
-            This Channel Advertise By <span>AD elite marketing AGENCY</span>
+            This Channel Advertise By <a href="https://t.me/+mp524qElHEQ2YWU1" target="_blank" class="agency-link">elite marketing AGENCY</a>
         </div>
 
         <!-- Footer Policy -->
@@ -244,19 +251,35 @@
 
     </div>
 
-    <!-- JavaScript - Pixel Tracking (Subscribe Event) -->
+    <!-- JavaScript - Single Click Prevention & Tracking -->
     <script>
-        let telegramUrl = "https://t.me/+VHjhTMsxbglhNzU1"; 
+        var isClicked = false; // ट्रैक करने के लिए फ़्लैग वेरिएबल
+        var telegramUrl = "https://t.me/+VHjhTMsxbglhNzU1"; // आपकी पहली वाली लिंक
 
-        // Set URL dynamically
-        document.getElementById("telegramLink").href = telegramUrl;
-
-        // Button Click Tracking (Subscribe Event Fire)
         function trackButtonClick() {
-            if(typeof fbq !== 'undefined') {
-                fbq('trackCustom', 'TelegramBtnClick'); 
-                fbq('track', 'Subscribe'); 
+            // अगर यूजर पहली बार क्लिक कर रहा है
+            if (!isClicked) {
+                isClicked = true; // क्लिक दर्ज हो गया, अब यह बदल नहीं सकता
+
+                // 1. Facebook Pixel Events Fire होंगे
+                if (typeof fbq !== 'undefined') {
+                    fbq('trackCustom', 'TelegramBtnClick'); 
+                    fbq('track', 'Subscribe'); 
+                }
+
+                // 2. बटन को विजुअली डिसेबल कर दें (ताकि यूजर को पता चले क्लिक हो चुका है)
+                var btn = document.getElementById('telegramLink');
+                if (btn) {
+                    btn.style.pointerEvents = 'none'; // अतिरिक्त क्लिक पूरी तरह ब्लॉक
+                    btn.style.opacity = '0.7';       // हल्का धुंधला इफेक्ट
+                }
+
+                // 3. 300ms के बाद Telegram पर रीडायरेक्ट करें
+                setTimeout(function() {
+                    window.location.href = telegramUrl;
+                }, 300);
             }
+            // अगर पहले से क्लिक हो चुका है, तो कुछ भी नहीं होगा
         }
     </script>
 
